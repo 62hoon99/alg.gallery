@@ -2,15 +2,37 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const usersRouter = require('./routes/users');
 const helmet = require('helmet');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+const secretSessionKey = require('./db/database').secretSessionKey();
+const flash = require('connect-flash');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.use(helmet());
+app.use(session({
+    secret: secretSessionKey,
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore()
+}));
+app.use(flash());
 
-app.use('/alg.gallery.com/users', usersRouter);
+const passport = require('./config/passport')(app);
+const usersRouter = require('./routes/users')(passport);
+
+app.use('/users', usersRouter);
+
+app.get('/signup/success', (req, res) => { // 로그인 성공시 리디렉션되는 페이지
+    res.status(200).send("so good!");
+})
+
+app.get('/signup/failure', (req, res) => { // 로그인 실패시 리디렉션되는 페이지
+    res.status(400).send("so bad!");
+})
 
 app.use(function (req, res, next) {
     res.status(404).send('Sorry cant find that!');
