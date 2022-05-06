@@ -2,3 +2,4 @@ db/
 package-lock.json
 main.spec.js
 node_modules/
+sessions/
