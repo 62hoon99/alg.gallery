@@ -23,8 +23,10 @@ app.use(flash());
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
+const captchaRouter = require('./routes/captcha')();
 
 app.use('/users', usersRouter);
+app.use('/captcha', captchaRouter);
 
 app.get('/signup/success', (req, res) => { // 로그인 성공시 리디렉션되는 페이지
     res.status(200).send("so good!");
@@ -43,6 +45,6 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 });
 
-app.listen(3000, () => {
+app.listen(8080, () => {
     console.log('Example app listening on port 3000!');
 });
