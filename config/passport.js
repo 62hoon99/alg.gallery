@@ -29,7 +29,10 @@ module.exports = (app) => {
 
             user = user[0];
 
-            if (Object.keys(user).length === 0) {
+            // if (Object.keys(user).length === 0) {
+            //     return done(null, false, { message: '존재하지 않는 아이디입니다' });
+            // }
+            if (user == null || user == undefined) {
                 return done(null, false, { message: '존재하지 않는 아이디입니다' });
             }
             else if (hashValue === user.password) {

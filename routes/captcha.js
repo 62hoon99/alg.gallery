@@ -37,7 +37,9 @@ module.exports = () => {
             console.log(response.statusCode) // 200
             console.log(response.headers['content-type'])
         });
+        _req.pipe(writeStream); // 파일로 출력
         _req.pipe(res); // 브라우저로 출력
+
     });
 
     router.get('/result', (req, res) => {
