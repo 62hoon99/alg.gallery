@@ -24,9 +24,11 @@ app.use(flash());
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
 const captchaRouter = require('./routes/captcha')();
+const postRouter = require('./routes/post')();
 
 app.use('/users', usersRouter);
 app.use('/captcha', captchaRouter);
+app.use('/post', postRouter);
 
 app.get('/signup/success', (req, res) => { // 로그인 성공시 리디렉션되는 페이지
     res.status(200).send("so good!");

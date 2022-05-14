@@ -8,6 +8,7 @@
     "flash": "^1.1.0",
     "fs": "^0.0.1-security",
     "helmet": "^5.0.2",
+    "moment": "^2.29.3",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "passport": "^0.5.2",

@@ -5,7 +5,7 @@ const hashing = require('../config/hashing');
 const salt = require('../db/database').salt();
 
 module.exports = (passport) => {
-    router.post('/signin', (req, res) => {
+    router.post('/signup', (req, res) => {
         const userInfo = req.body;
         const hashValue = hashing.enc(userInfo.userid, userInfo.password, salt);
         db.query('INSERT INTO users VALUES(?, ?);', [userInfo.userid, hashValue], (error, data) => {
@@ -17,7 +17,7 @@ module.exports = (passport) => {
         res.status(200).end();
     });
 
-    router.post('/signup', passport.authenticate('local', {
+    router.post('/signin', passport.authenticate('local', {
         successRedirect: '/signup/success', // 로그인 성공시 리디렉션되는 페이지
         failureRedirect: '/signup/failure', // 로그인 실패시 리디렉션되는 페이지
         failureFlash: true,

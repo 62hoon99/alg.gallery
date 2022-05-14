@@ -2,3 +2,4 @@ main.spec.js
 node_modules/
 sessions/
 .env
+test_id_pwd.txt
