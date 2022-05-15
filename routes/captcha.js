@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const client_id = 'm9K36xwFM3iNfe7ekwgE';//개발자센터에서 발급받은 Client ID
-const client_secret = 'cdBAaMoYz6'; //개발자센터에서 발급받은 Client Secret
+const client_id = process.env.client_id;//개발자센터에서 발급받은 Client ID
+const client_secret = process.env.client_secret; //개발자센터에서 발급받은 Client Secret
 const code_nkey = "0";
 const code_result = "1";
 const fs = require('fs');
