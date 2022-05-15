@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(session({
     secret: secretSessionKey,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new FileStore()
 }));
 app.use(flash());
