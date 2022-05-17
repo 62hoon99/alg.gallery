@@ -33,7 +33,7 @@ module.exports = (passport) => {
         });
     });
 
-    router.get('/id/overlap', (req, res) => {
+    router.get('/overlap', (req, res) => {
         const userInfo = req.body;
         db.query('SELECT * FROM users WHERE userid = ?', [userInfo.userid], (error, data) => {
             if (error) {

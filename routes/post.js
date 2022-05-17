@@ -8,7 +8,8 @@ module.exports = () => {
     router.post('/registration', (req, res) => {
         const postInfo = req.body;
         const postDate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-        db.query('INSERT INTO post VALUES(?, ?, ?, ?, ?, ?, ?, ?);', [null, postInfo.userid, postInfo.algCode, postInfo.text, postInfo.tag1, postInfo.tag2, postInfo.tag3, postDate], (error, data) => {
+        const userid = req.session.passport.user.userid;
+        db.query('INSERT INTO post VALUES(?, ?, ?, ?, ?, ?, ?, ?);', [null, userid, postInfo.algCode, postInfo.text, postInfo.tag1, postInfo.tag2, postInfo.tag3, postDate], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }
