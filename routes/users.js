@@ -11,7 +11,7 @@ module.exports = (passport) => {
         const hashValue = hashing.enc(userInfo.userid, userInfo.password, salt);
         db.query('INSERT INTO users VALUES(?, ?);', [userInfo.userid, hashValue], (error, data) => {
             if (error) {
-                res.status(400).json(res_form.fail());
+                res.status(400).json(res_form.error(error));
             }
             else {
                 res.status(200).json(res_form.success());
@@ -36,7 +36,10 @@ module.exports = (passport) => {
     router.get('/id/overlap', (req, res) => {
         const userInfo = req.body;
         db.query('SELECT * FROM users WHERE userid = ?', [userInfo.userid], (error, data) => {
-            if (data[0] === undefined) {
+            if (error) {
+                res.status(400).json(res_form.error(error));
+            }
+            else if (data[0] === undefined) {
                 res.status(200).json(res_form.success());
             } else {
                 res.status(400).json(res_form.fail());

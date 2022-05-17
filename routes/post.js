@@ -3,11 +3,6 @@ const router = express.Router();
 const db = require('../db/database').init();
 const moment = require('moment');
 const res_form = require('../lib/res_from');
-const error_form = (error) => {
-    let form = res_form.fail();
-    form.errors = error;
-    return form;
-}
 
 module.exports = () => {
     router.post('/registration', (req, res) => {
@@ -15,7 +10,7 @@ module.exports = () => {
         const postDate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
         db.query('INSERT INTO post VALUES(?, ?, ?, ?, ?, ?, ?, ?);', [null, postInfo.userid, postInfo.algCode, postInfo.text, postInfo.tag1, postInfo.tag2, postInfo.tag3, postDate], (error, data) => {
             if (error) {
-                res.status(400).json(error_form(error));
+                res.status(400).json(res_form.error(error));
             }
             else {
                 let form = res_form.success();
@@ -31,7 +26,7 @@ module.exports = () => {
         const postid = req.body.postid;
         db.query('SELECT * FROM post WHERE postid = ?;', [postid], (error, data) => {
             if (error) {
-                res.status(400).json(error_form(error));
+                res.status(400).json(res_form.error(error));
             }
             else if (data[0] === undefined) {
                 let form = res_form.fail();
@@ -49,7 +44,7 @@ module.exports = () => {
         const lang = req.body.lang;
         db.query('SELECT * FROM post WHERE tag1 = ?;', [lang], (error, data) => {
             if (error) {
-                res.status(400).json(error_form(error));
+                res.status(400).json(res_form.error(error));
             }
             else {
                 let form = res_form.success();
@@ -70,7 +65,7 @@ module.exports = () => {
             const userid = req.session.passport.user.userid;
             db.query('SELECT * FROM likes WHERE postid = ? and userid = ?;', [postid, userid], (error, data) => {
                 if (error) {
-                    res.status(400).json(error_form(error));
+                    res.status(400).json(res_form.error(error));
                 }
                 else if (data[0] === undefined) { // 사용자가 해당 post에 좋아요 누른적이 없는 경우
                     likes_insert(postid, userid);
@@ -86,7 +81,7 @@ module.exports = () => {
         const likes_insert = (postid, userid) => {
             db.query('INSERT INTO likes values(?, ?);', [postid, userid], (error, data) => {
                 if (error) {
-                    res.status(400).json(error_form(error));
+                    res.status(400).json(res_form.error(error));
                 }
             });
         };
@@ -94,7 +89,7 @@ module.exports = () => {
         const likes_delete = (postid, userid) => {
             db.query('DELETE FROM likes WHERE postid = ? and userid = ?', [postid, userid], (error, data) => {
                 if (error) {
-                    res.status(400).json(error_form(error));
+                    res.status(400).json(res_form.error(error));
                 }
             });
         };
@@ -102,7 +97,7 @@ module.exports = () => {
         const likes_count = (postid, status) => {
             db.query('SELECT COUNT(*) AS count FROM likes WHERE postid = ?', [postid], (error, data) => {
                 if (error) {
-                    res.status(400).json(error_form(error));
+                    res.status(400).json(res_form.error(error));
                 }
                 else {
                     let form = res_form.success();
