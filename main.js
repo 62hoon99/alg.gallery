@@ -7,6 +7,7 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const secretSessionKey = require('./db/database').secretSessionKey();
 const flash = require('connect-flash');
+const cors = require('cors');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.use(session({
     store: new FileStore()
 }));
 app.use(flash());
+app.use(cors());
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
