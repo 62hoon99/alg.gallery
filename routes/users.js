@@ -34,8 +34,8 @@ module.exports = (passport) => {
     });
 
     router.get('/overlap', (req, res) => {
-        const userInfo = req.body;
-        db.query('SELECT * FROM users WHERE userid = ?', [userInfo.userid], (error, data) => {
+        const userid = req.query.userid;
+        db.query('SELECT * FROM users WHERE userid = ?', [userid], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }

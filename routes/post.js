@@ -24,7 +24,7 @@ module.exports = () => {
     });
 
     router.get('/modal', (req, res) => {
-        const postid = req.body.postid;
+        const postid = req.query.postid;
         db.query('SELECT * FROM post WHERE postid = ?;', [postid], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
@@ -42,7 +42,7 @@ module.exports = () => {
     });
 
     router.get('/sort/lang', (req, res) => {
-        const lang = req.body.lang;
+        const lang = req.query.lang;
         db.query('SELECT * FROM post WHERE tag1 = ?;', [lang], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
