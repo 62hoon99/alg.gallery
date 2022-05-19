@@ -20,11 +20,13 @@ module.exports = (passport) => {
     });
 
     router.post('/signin', passport.authenticate('local', {
-        successRedirect: '/users/signin/success', // 로그인 성공시 리디렉션되는 페이지
-        failureRedirect: '/users/signin/failure', // 로그인 실패시 리디렉션되는 페이지
+        // successRedirect: '/users/signin/success', // 로그인 성공시 리디렉션되는 페이지
+        // failureRedirect: '/users/signin/failure', // 로그인 실패시 리디렉션되는 페이지
         failureFlash: true,
         successFlash: true
-    }));
+    }), (req, res) => {
+        res.status(200).json(res_form.success());
+    });
 
     router.post('/signout', (req, res) => {
         req.logout();
@@ -48,11 +50,11 @@ module.exports = (passport) => {
     });
 
     router.get('/signin/success', (req, res) => { // 로그인 성공시 리디렉션되는 페이지
-        res.status(200).json(res_form.success());
+        res.json(200, res_form.success());
     });
 
     router.get('/signin/failure', (req, res) => { // 로그인 실패시 리디렉션되는 페이지
-        res.status(400).json(res_form.fail());
+        res.json(400, res_form.fail());
     });
 
     router.get('/signout/success', (req, res) => { // 로그아웃 성공시 리디렉션되는 페이지

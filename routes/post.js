@@ -50,6 +50,7 @@ module.exports = () => {
             else {
                 let form = res_form.success();
                 form.data = data;
+                // res.writeHead(200, { 'Content-Type': 'text/json;charset=utf-8' });
                 res.status(200).json(form);
             }
         });
