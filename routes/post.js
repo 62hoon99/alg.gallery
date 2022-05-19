@@ -56,6 +56,19 @@ module.exports = () => {
         });
     });
 
+    router.get('/sort/recent', (req, res) => {
+        db.query('SELECT * FROM post ORDER BY postid DESC', (error, data) => {
+            if (error) {
+                res.json(400, res_form.error(error));
+            }
+            else {
+                let form = res_form.success();
+                form.data = data;
+                res.json(200, form);
+            }
+        });
+    });
+
     router.post('/likes/click', (req, res) => {
         if (req.session === undefined || req.session.passport === undefined) { // 비인증 상태인 유저가 좋아요를 누른 경우
             let form = res_form.fail();
