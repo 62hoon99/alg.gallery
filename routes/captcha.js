@@ -26,7 +26,7 @@ module.exports = () => {
     });
 
     router.get('/image', (req, res) => {
-        const api_url = 'https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=' + req.body.key;
+        const api_url = 'https://openapi.naver.com/v1/captcha/ncaptcha.bin?key=' + req.query.key;
         const request = require('request');
         const options = {
             url: api_url,
