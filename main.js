@@ -28,11 +28,13 @@ const usersRouter = require('./routes/users')(passport);
 const captchaRouter = require('./routes/captcha')();
 const postRouter = require('./routes/post')();
 const commentRouter = require('./routes/comment')();
+const likesRouter = require('./routes/likes')();
 
 app.use('/users', usersRouter);
 app.use('/captcha', captchaRouter);
 app.use('/post', postRouter);
 app.use('/comment', commentRouter);
+app.use('/likes', likesRouter);
 
 app.use(function (req, res, next) {
     res.status(404).send('Sorry cant find that!');
