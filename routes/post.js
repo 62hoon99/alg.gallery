@@ -25,7 +25,7 @@ module.exports = () => {
 
     router.get('/modal', (req, res) => {
         const postid = req.query.postid;
-        db.query('select * from post, (select count(*) as count, postid from likes group by postid) l_table where post.postid = l_table.postid and post.postid = ?;', [postid], (error, data) => {
+        db.query('select post.postid, userid, algCode, text, tag1, tag2, tag3, post_date, likes from post left outer join (select count(*) as likes, postid from likes group by postid) l_table on post.postid = l_table.postid where post.postid = ?;', [postid], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }
