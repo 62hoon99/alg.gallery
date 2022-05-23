@@ -9,7 +9,7 @@ module.exports = (passport) => {
     router.post('/signup', (req, res) => {
         const userInfo = req.body;
         const hashValue = hashing.enc(userInfo.userid, userInfo.password, salt);
-        db.query('INSERT INTO users VALUES(?, ?);', [userInfo.userid, hashValue], (error, data) => {
+        db.query('INSERT INTO users VALUES(?, ?, ?);', [userInfo.userid, hashValue, userInfo.nickname], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }
@@ -20,9 +20,7 @@ module.exports = (passport) => {
     });
 
     router.post('/signin', passport.authenticate('local', {
-        // successRedirect: '/users/signin/success', // 로그인 성공시 리디렉션되는 페이지
-        // failureRedirect: '/users/signin/failure', // 로그인 실패시 리디렉션되는 페이지
-        failureFlash: true,
+        failureFlash: false,
         successFlash: true
     }), (req, res) => {
         res.status(200).json(res_form.success());
@@ -47,14 +45,6 @@ module.exports = (passport) => {
                 res.status(400).json(res_form.fail());
             }
         });
-    });
-
-    router.get('/signin/success', (req, res) => { // 로그인 성공시 리디렉션되는 페이지
-        res.json(200, res_form.success());
-    });
-
-    router.get('/signin/failure', (req, res) => { // 로그인 실패시 리디렉션되는 페이지
-        res.json(400, res_form.fail());
     });
 
     router.get('/signout/success', (req, res) => { // 로그아웃 성공시 리디렉션되는 페이지

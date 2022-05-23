@@ -25,7 +25,7 @@ module.exports = () => {
 
     router.get('/modal', (req, res) => {
         const postid = req.query.postid;
-        db.query('select * from post where postid = ?;', [postid], (error, data) => {
+        db.query('select postid, post.userid, nickname, algCode, text, tag1, tag2, tag3, post_date from post, (select userid, nickname from users) u_table where post.userid = u_table.userid and postid = ?;', [postid], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }
@@ -41,9 +41,11 @@ module.exports = () => {
         });
     });
 
-    router.get('/sort/lang', (req, res) => {
+    router.get('/sort/mypage/lang', (req, res) => {
         const lang = req.query.lang;
-        db.query('SELECT * FROM post WHERE tag1 = ?;', [lang], (error, data) => {
+        const userid = req.session.passport.user.userid;
+
+        db.query('select postid, post.userid, nickname, algCode, text, tag1, tag2, tag3, post_date from post, (select userid, nickname from users) u_table where post.userid = u_table.userid and tag1 = ? AND post.userid = ?;', [lang, userid], (error, data) => {
             if (error) {
                 res.status(400).json(res_form.error(error));
             }
@@ -55,8 +57,8 @@ module.exports = () => {
         });
     });
 
-    router.get('/sort/recent', (req, res) => {
-        db.query('SELECT * FROM post ORDER BY postid DESC', (error, data) => {
+    router.get('/sort/mainpage/recent', (req, res) => {
+        db.query('select postid, post.userid, nickname, algCode, text, tag1, tag2, tag3, post_date from post, (select userid, nickname from users) u_table where post.userid = u_table.userid order by post_date desc;', (error, data) => {
             if (error) {
                 res.json(400, res_form.error(error));
             }
