@@ -68,24 +68,6 @@ module.exports = () => {
     router.get('/check', (req, res) => {
         const postid = req.query.postid;
 
-        if (req.session === undefined || req.session.passport === undefined) {
-            likes_count(postid, 0);
-        }
-        else {
-            const userid = req.session.passport.user.userid;
-            db.query('SELECT * FROM likes WHERE postid = ? and userid = ?;', [postid, userid], (error, data) => {
-                if (error) {
-                    return res.status(400).json(res_form.error(error));
-                }
-                else if (data[0] === undefined) { // 사용자가 해당 post에 좋아요 누른적이 없는 경우
-                    likes_count(postid, 0);
-                }
-                else { // 사용자가 해당 post에 좋아요 누른적이 있는 경우
-                    likes_count(postid, 1);
-                }
-            });
-        }
-
         const likes_count = (postid, status) => {
             db.query('SELECT COUNT(*) AS count FROM likes WHERE postid = ?', [postid], (error, data) => {
                 if (error) {
@@ -99,6 +81,24 @@ module.exports = () => {
                 }
             });
         };
+
+        if (req.session === undefined || req.session.passport === undefined) {
+            likes_count(postid, 0);
+        }
+        else {
+            const userid = req.session.passport.user.userid;
+            db.query('SELECT * FROM likes WHERE postid = ? and userid = ?;', [postid, userid], (error, data) => {
+                if (error) {
+                    return res.status(400).json(res_form.error(error));
+                }
+                else if (data[0] === undefined) { // 사용자가 해당 post에 좋아요 누른적이 없는 경우
+                    return likes_count(postid, 0);
+                }
+                else { // 사용자가 해당 post에 좋아요 누른적이 있는 경우
+                    return likes_count(postid, 1);
+                }
+            });
+        }
     });
 
     return router;
