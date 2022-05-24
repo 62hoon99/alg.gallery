@@ -70,5 +70,18 @@ module.exports = () => {
         });
     });
 
+    router.delete('/delete', (req, res) => {
+        const postid = req.query.postid;
+        db.query('delete from post where postid = ?; delete from likes where postid = ?; delete from comment where postid = ?;', [postid, postid, postid], (error, data) => {
+            if (error) {
+                res.json(400, res_form.error(error));
+            }
+            else {
+                console.log(data);
+                res.json(200, res_form.success());
+            }
+        });
+    });
+
     return router;
 }
