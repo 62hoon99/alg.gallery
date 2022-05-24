@@ -34,5 +34,17 @@ module.exports = () => {
         });
     });
 
+    router.delete('/delete', (req, res) => {
+        const commentid = req.query.commentid;
+        db.query('delete from comment where commentid = ?;', [commentid], (error, data) => {
+            if (error) {
+                res.json(400, res_form.error(error));
+            }
+            else {
+                res.json(200, res_form.success());
+            }
+        });
+    });
+
     return router;
 }
