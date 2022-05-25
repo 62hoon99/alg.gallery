@@ -51,5 +51,14 @@ module.exports = (passport) => {
         res.status(200).json(res_form.success());
     });
 
+    router.get('/check', (req, res) => {
+        if (req.session.passport === undefined) {
+            res.json(400, res_form.fail());
+        }
+        else {
+            res.json(200, res_form.success());
+        }
+    });
+
     return router;
 }
