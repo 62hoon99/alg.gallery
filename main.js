@@ -25,6 +25,9 @@ app.use(cors());
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 const captchaRouter = require('./routes/captcha')();
 const postRouter = require('./routes/post')();
 const commentRouter = require('./routes/comment')();
