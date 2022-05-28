@@ -4,9 +4,10 @@ const db = require('../db/database').init();
 const hashing = require('../config/hashing');
 const salt = require('../db/database').salt();
 const res_form = require('../lib/res_from');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 module.exports = (passport) => {
-    router.post('/signup', (req, res) => {
+    router.post('/signup', isNotLoggedIn, (req, res) => {
         const userInfo = req.body;
         const hashValue = hashing.enc(userInfo.userid, userInfo.password, salt);
         db.query('INSERT INTO users VALUES(?, ?, ?);', [userInfo.userid, hashValue, userInfo.nickname], (error, data) => {
@@ -19,14 +20,14 @@ module.exports = (passport) => {
         });
     });
 
-    router.post('/signin', passport.authenticate('local', {
+    router.post('/signin', isNotLoggedIn, passport.authenticate('local', {
         failureFlash: false,
         successFlash: true
     }), (req, res) => {
         res.status(200).json(res_form.success());
     });
 
-    router.post('/signout', (req, res) => {
+    router.post('/signout', isLoggedIn, isLoggedIn, (req, res) => {
         req.logout();
         req.session.destroy();
         res.json(200, res_form.success());
