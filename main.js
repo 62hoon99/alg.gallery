@@ -18,6 +18,10 @@ app.use(session({
     secret: secretSessionKey,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false
+    },
     store: new FileStore()
 }));
 app.use(flash());
