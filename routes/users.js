@@ -28,9 +28,8 @@ module.exports = (passport) => {
 
     router.post('/signout', (req, res) => {
         req.logout();
-        req.session.destroy((err) => {
-            res.redirect('/users/signout/success'); // 로그아웃 성공시 리디렉션되는 페이지
-        });
+        req.session.destroy();
+        res.json(200, res_form.success());
     });
 
     router.get('/overlap', (req, res) => {
@@ -45,10 +44,6 @@ module.exports = (passport) => {
                 res.status(400).json(res_form.fail());
             }
         });
-    });
-
-    router.get('/signout/success', (req, res) => { // 로그아웃 성공시 리디렉션되는 페이지
-        res.status(200).json(res_form.success());
     });
 
     router.get('/check', (req, res) => {

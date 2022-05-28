@@ -19,7 +19,8 @@ module.exports = (app) => {
 
     passport.use(new LocalStrategy({
         usernameField: 'userid',
-        passwordField: 'password'
+        passwordField: 'password',
+        session: true,
     }, (userid, password, done) => {
         const hashValue = hashing.enc(userid, password, salt);
         db.query('SELECT * FROM users WHERE userid = ?;', [userid], (error, user) => {
