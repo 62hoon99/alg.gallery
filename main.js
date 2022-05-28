@@ -25,7 +25,7 @@ app.use(session({
     store: new FileStore()
 }));
 app.use(flash());
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
