@@ -25,7 +25,7 @@ app.use(session({
     store: new FileStore()
 }));
 app.use(flash());
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: 'http://ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com', credentials: true }));
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
