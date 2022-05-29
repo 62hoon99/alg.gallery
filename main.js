@@ -25,12 +25,10 @@ app.use(session({
     store: new FileStore()
 }));
 app.use(flash());
-app.use(cors({ origin: 'http://ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com', credentials: true }));
+app.use(cors({ origin: 'http://ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com:3000', credentials: true }));
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
-app.use(passport.initialize());
-app.use(passport.session());
 
 const captchaRouter = require('./routes/captcha')();
 const postRouter = require('./routes/post')();

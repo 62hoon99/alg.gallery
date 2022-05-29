@@ -20,11 +20,21 @@ module.exports = (passport) => {
         });
     });
 
-    router.post('/signin', isNotLoggedIn, passport.authenticate('local', {
-        failureFlash: false,
-        successFlash: true
-    }), (req, res) => {
-        res.status(200).json(res_form.success());
+    router.post('/signin', isNotLoggedIn, (req, res, next) => {
+        passport.authenticate('local', (authError, user, info) => {
+            if (authError) {
+                return next(authError);
+            }
+            if (!user) {
+                return res.json(401, res_form.fail());
+            }
+            return req.logIn(user, (loginError) => {
+                if (loginError) {
+                    return next(loginError);
+                }
+                return res.json(200, res_form.success());
+            });
+        })(req, res, next);
     });
 
     router.post('/signout', isLoggedIn, isLoggedIn, (req, res) => {
