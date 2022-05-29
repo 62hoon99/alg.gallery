@@ -20,12 +20,13 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false
+        secure: false,
+        domain: ".ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com"
     },
     store: new FileStore()
 }));
 app.use(flash());
-app.use(cors({ origin: 'http://ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com:3000', credentials: true }));
+app.use(cors({ origin: 'ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com:3000', credentials: true }));
 
 const passport = require('./config/passport')(app);
 const usersRouter = require('./routes/users')(passport);
