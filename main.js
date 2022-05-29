@@ -21,7 +21,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: false,
-        domain: ".ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com"
+        domain: ".ec2-3-39-190-243.ap-northeast-2.compute.amazonaws.com:3000",
     },
     store: new FileStore()
 }));
