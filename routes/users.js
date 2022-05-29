@@ -47,7 +47,7 @@ module.exports = (passport) => {
         });
     });
 
-    router.get('/check', (req, res) => {
+    router.get('/check', isLoggedIn, (req, res) => {
         if (req.session.passport === undefined) {
             res.json(400, res_form.fail());
         }
